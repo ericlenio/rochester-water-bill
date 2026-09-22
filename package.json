@@ -1,0 +1,19 @@
+{
+  "name": "city-of-rochester-water",
+  "version": "1.0.0",
+  "description": "Look up the actual City of Rochester, NY water bill and email when it changes",
+  "type": "module",
+  "main": "water-bill.js",
+  "bin": {
+    "water-bill": "./water-bill.js"
+  },
+  "scripts": {
+    "start": "node water-bill.js \"10 Felix St\"",
+    "watch": "node bill-watch.js",
+    "dry-run": "node bill-watch.js --dry-run"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

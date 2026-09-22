@@ -1,0 +1,11 @@
+# Scans of the paper bill carry your name, service address and water account
+# number. Kept out of history so the repo stays safe to push somewhere.
+*.pdf
+
+# State lives in ~/Library/Application Support by default; ignored here in
+# case WATER_BILL_STATE is ever pointed at the working directory.
+state.json
+*.log
+
+node_modules/
+.DS_Store
