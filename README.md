@@ -50,6 +50,25 @@ why this is not a quarterly cron job:
 State lives in `~/Library/Application Support/rochester-water-bill/state.json`.
 Delete it to force the next run to treat the current bill as new.
 
+### When the lookup fails
+
+A failed lookup is not silent. The state file counts consecutive failures, and
+after `ALERT_AFTER_FAILURES` of them (default 3) you get one alert email naming
+the error, how long it has been failing, and the last good reading. When the
+lookup works again you get a recovery notice.
+
+Alerting is once per outage, not once per run. The check is daily, so mailing on
+every failure would send you an identical message every morning for as long as
+the City's services were down. A single failure is not worth an email either —
+a network blip heals itself by the next run — which is what the threshold is for.
+
+The blind spot: if sending mail is what is broken (revoked app password, Gmail
+unreachable), no alert can reach you. That failure shows up only in the log, so
+`tail` it if the daily lines ever stop.
+
+`--dry-run` is read-only. It prints what would be sent and writes no state, so
+it will neither advance the failure count nor clear an outage.
+
 ### Install the daily job
 
 ```bash
@@ -83,6 +102,7 @@ go in the plist; the password is read from the keychain at run time.
 | `SMTP_PASS` | unset — falls back to the keychain |
 | `MAIL_TO` | defaults to `SMTP_USER`, i.e. yourself |
 | `WATER_BILL_ADDRESS` | required — the city address to watch |
+| `ALERT_AFTER_FAILURES` | `3` — consecutive failures before alerting |
 | `WATER_BILL_STATE` | `~/Library/Application Support/rochester-water-bill/state.json` |
 
 ## Where the data comes from
